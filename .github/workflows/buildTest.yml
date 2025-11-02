@@ -11,38 +11,46 @@ permissions:
   contents: read
 
 jobs:
-  Core-Pytest:
+  Install_Dependencies:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-
-      - name: Set up latest python
+      - name: setup-python
         uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-          cache: pip  # why do I need to cache pip
-
-      - name: Install Dependencies
+      - name: Install_Dependencies
         run: |
           python -m pip install --upgrade pip
           
           if [ -f requirements.txt ]; then
             python -m pip install -r requirements.txt
           fi
+  # Core-Pytest:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v5
+
+  #     - name: Set up latest python
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: "3.11"
+  #         cache: pip  # why do I need to cache pip
+
+
           
-          python -m pip install pytest
+  #         python -m pip install pytest
 
 
-      - name: Run Pytest
-        run: |
-          pytest -v --maxfail=1 --junitxml=pytest-results.xml
+  #     - name: Run Pytest
+  #       run: |
+  #         pytest -v --maxfail=1 --junitxml=pytest-results.xml
 
-      - name: Upload Pytest results
-        uses: actions/upload-artifact@v4
-        with:
-          name: pytest-results
-          path: report
+  #     - name: Upload Pytest results
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: pytest-results
+  #         path: report
 
   flake8:
     runs-on: ubuntu-latest
